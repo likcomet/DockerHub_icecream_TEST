@@ -31,11 +31,9 @@ RUN touch /var/log/iceccd.log /var/log/icecc-scheduler.log
 RUN chown icecc:icecc /var/log/iceccd.log /var/log/icecc-scheduler.log
 RUN chown icecc:icecc /var/log/icecc-scheduler.log
 #CMD iceccd -d -s $ICECREAM_SCHEDULER_HOST -l /var/log/icecc.log && tail -f /var/log/icecc.log
+ADD ./Enable-iceccd-scheduler.sh /root/Enable-iceccd-scheduler.sh
 ADD ./iceccd /etc/logrotate.d/iceccd
 ADD ./icecc-scheduler /etc/logrotate.d/icecc-scheduler
-ADD ./Enable-iceccd-scheduler.sh /root/Enabled-iceccd-scheduler.sh
 RUN chmod 755 /root/*.sh
 CMD /root/Enable-iceccd-scheduler.sh
-#CMD /root/Enable-icecc-scheduler.sh
 EXPOSE 20245/tcp 18765/tcp 18766/tcp 18765/udp
-#ENTRYPOINT /root/Enable-icecc-scheduler.sh
