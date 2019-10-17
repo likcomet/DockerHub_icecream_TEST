@@ -1,8 +1,7 @@
 FROM gcc:latest
 
 RUN useradd icecc
-RUN alias ll="ls -al"
-RUN alias vi="ls -al"
+RUN echo "alias ll='ls -al'" > /root/.bashrc
 WORKDIR /home/icecc
 RUN cp -p /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 #ENV ProxyMode=`ping -c 1 -w 1 updateproxy.neople.co.kr | grep % | cut -f3 -d"," | cut -f2 -d" " | cut -c1-1 `
@@ -15,7 +14,7 @@ RUN if [ "`ping -c 1 -w 1 updateproxy.neople.co.kr | grep % | cut -f3 -d"," | cu
     git config --global url."http://".insteadOf git://; fi
 
 RUN apt-get update -y --force-yes
-RUN apt-get install -y libcap-ng-dev liblzo2-dev git docbook2x vim locales zstd libzstd-dev libarchive-dev cron logrotate --force-yes
+RUN apt-get install -y libcap-ng-dev liblzo2-dev git docbook2x vim locales zstd libzstd-dev libarchive-dev cron logrotate net-tools --force-yes
 RUN git clone https://github.com/icecc/icecream.git
 WORKDIR icecream
 RUN for ports in 8765 8766 8767 8768 8769 10245 10246 10247; do         find ./ -type f -name *.cpp -exec sed -i s/${ports}/`expr ${ports} + 10000`/g {} \;;         find ./ -type f -name *.xml -exec sed -i s/${ports}/`expr ${ports} + 10000`/g {} \;;         find ./ -type f -name *.md -exec sed -i s/${ports}/`expr ${ports} + 10000`/g {} \;;         find ./ -type f -name *.h -exec sed -i s/${ports}/`expr ${ports} + 10000`/g {} \;;         find ./ -type f -name *.scheduler -exec sed -i s/${ports}/`expr ${ports} + 10000`/g {} \;;         find ./ -type f -name *.icecc  -exec sed -i s/${ports}/`expr ${ports} + 10000`/g {} \;; done
